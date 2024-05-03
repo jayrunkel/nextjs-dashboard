@@ -6,7 +6,9 @@ const {
   revenue,
   users,
 } = require('../app/lib/placeholder-data.js');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
+
 
 const DB_NAME = 'dashboard';
 
@@ -17,7 +19,7 @@ async function seedUsers(client) {
     const usersCollection = client.db(DB_NAME).collection('users');
     const insertedUsers = await usersCollection.insertMany(users);
     
-    console.log(`Seeded ${insertedUsers.nInserted} users`);
+    console.log(`Seeded ${insertedUsers.insertedCount} users`);
 
     return {
       users: insertedUsers,
@@ -32,9 +34,10 @@ async function seedInvoices(client) {
   try {
     // insert invoices into invoices collection
     const invoicesCollection = client.db(DB_NAME).collection('invoices');
-    const insertedInvoices = await invoicesCollection.insertMany(invoices);
+    const insertedInvoices = await invoicesCollection.insertMany(
+      invoices.map((invoice) => {return {...invoice, id: uuidv4()}}));
 
-    console.log(`Seeded ${insertedInvoices.nInserted} invoices`);
+    console.log(`Seeded ${insertedInvoices.insertedCount} invoices`);
 
     return {
       invoices: insertedInvoices,
@@ -51,7 +54,7 @@ async function seedCustomers(client) {
     const customersCollection = client.db(DB_NAME).collection('customers');
     const insertedCustomers = await customersCollection.insertMany(customers);
 
-    console.log(`Seeded ${insertedCustomers.nInserted} customers`);
+    console.log(`Seeded ${insertedCustomers.insertedCount} customers`);
 
     return {
       customers: insertedCustomers,
@@ -68,7 +71,7 @@ async function seedRevenue(client) {
     const revenueCollection = client.db(DB_NAME).collection('revenue');
     const insertedRevenue = await revenueCollection.insertMany(revenue);
 
-    console.log(`Seeded ${insertedRevenue.nInserted} revenue`);
+    console.log(`Seeded ${insertedRevenue.insertedCount} revenue`);
 
     return {
       revenue: insertedRevenue,

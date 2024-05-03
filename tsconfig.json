@@ -1,4 +1,7 @@
 {
+  "ts-node": {
+    "module": "esnext",
+  },
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -29,6 +32,6 @@
     ".next/types/**/*.ts",
     "app/lib/placeholder-data.js",
     "scripts/seed.js"
-  ],
+, "scripts/testMDBDAL.ts"  ],
   "exclude": ["node_modules"]
 }
